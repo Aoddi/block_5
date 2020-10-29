@@ -3,7 +3,7 @@
 require_once './include/cards.php';
 
 /**
- * @param array с карточками
+ * @param array $array с карточками
  */
 function checkingСheckboxes(array $array)
 {
@@ -22,7 +22,7 @@ function checkingСheckboxes(array $array)
 }
 
 /**
- * @param array с отсортированными карточками
+ * @param array $array с отсортированными карточками
  * @return string HTML code
  */
 function createCard(array $array): string
