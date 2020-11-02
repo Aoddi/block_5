@@ -2,45 +2,27 @@
 <?php
 require_once './include/cards.php';
 
-/**
- * @param array $array с карточками
- */
-function checkingСheckboxes(array $array)
-{
-    if (!empty($_POST)) {
-        foreach ($_POST as $key => $value) {
-            foreach ($array as $cardKey => $cardValue) {
-                if (strval($key) === $cardValue['name']) {
-                    unset($array[$cardKey]);
-                    unlink($_SERVER['DOCUMENT_ROOT'] . $cardValue['path']);
-                }
-            }
-        }
-    }
-
-    return createCard($array);
+if (!empty($_POST)) {
+    checkingСheckboxes($cards);
 }
 
 /**
- * @param array $array с отсортированными карточками
- * @return string HTML code
+ * @param array $cards массив с карточками
  */
-function createCard(array $array): string
+function checkingСheckboxes(array $cards)
 {
-    $cards = '';
-
-    foreach ($array as $card) {
-        $cards .= '<li class="gallery__item" id="" style="margin-bottom: 50px;"><img src="' . $card['path'] . '" alt="" class="gallery__img"><h3 class="gallery__title">' .  $card['name'] . '</h3><label><input type="checkbox" name="' . $card['name'] . '">Удалить</label></li>';
+    foreach ($cards as $card) {
+        if (in_array($card['name'], $_POST['uploadedFiles'])) {
+            unlink($_SERVER['DOCUMENT_ROOT'] . $card['path']);
+        }
     }
-
-    return $cards;
 }
 
 ?>
 </pre>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 
 <head>
     <meta charset="UTF-8">
@@ -51,7 +33,15 @@ function createCard(array $array): string
 <body>
     <form action="<?= $_SERVER['PHP_SELF'] ?>" method="POST">
         <ul class="gallery__list">
-            <?= checkingСheckboxes($cards) ?>
+            <?php foreach ($cards as $card) : ?>
+                <li class="gallery__item" id="" style="margin-bottom: 50px;">
+                    <img src="<?= $card['path'] ?>" alt="" class="gallery__img">
+                    <h3 class="gallery__title"><?= $card['name'] ?></h3>
+                    <label>
+                        <input type="checkbox" name="uploadedFiles[]" value="<?= $card['name']?>">Удалить
+                    </label>
+                </li>
+            <?php endforeach; ?>
         </ul>
         <input type="submit" value="Удалить отмеченные изображения">
     </form>
