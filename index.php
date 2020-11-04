@@ -1,4 +1,3 @@
-<pre>
 <?php
 
 // проверка нажимали ли на кнопку отправки формы
@@ -55,7 +54,6 @@ if (isset($_POST['upload'])) {
 }
 
 ?>
-</pre>
 
 <form enctype="multipart/form-data" action="<?= $_SERVER['PHP_SELF'] ?>" method="POST">
     <span>Загрузите файл: </span>
