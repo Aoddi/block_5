@@ -1,25 +1,24 @@
-<pre>
 <?php
-require_once './include/cards.php';
 
-if (!empty($_POST)) {
-    checkingСheckboxes($cards);
+if (!empty($_POST['filesToDelete'])) {
+    checkingСheckboxes();
 }
+
+require_once './include/cards.php';
 
 /**
  * @param array $cards массив с карточками
  */
-function checkingСheckboxes(array $cards)
+function checkingСheckboxes()
 {
-    foreach ($cards as $card) {
-        if (in_array($card['name'], $_POST['uploadedFiles'])) {
-            unlink($_SERVER['DOCUMENT_ROOT'] . $card['path']);
+    foreach ($_POST['filesToDelete'] as $file) {
+        if (file_exists($_SERVER['DOCUMENT_ROOT'] . $file)) {
+            unlink($_SERVER['DOCUMENT_ROOT'] . $file);
         }
     }
 }
 
 ?>
-</pre>
 
 <!DOCTYPE html>
 <html lang="ru">
@@ -38,7 +37,7 @@ function checkingСheckboxes(array $cards)
                     <img src="<?= $card['path'] ?>" alt="" class="gallery__img">
                     <h3 class="gallery__title"><?= $card['name'] ?></h3>
                     <label>
-                        <input type="checkbox" name="uploadedFiles[]" value="<?= $card['name']?>">Удалить
+                        <input type="checkbox" name="filesToDelete[]" value="<?= $card['path'] ?>">Удалить
                     </label>
                 </li>
             <?php endforeach; ?>
